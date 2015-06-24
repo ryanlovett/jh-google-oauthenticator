@@ -108,6 +108,25 @@ class GoogleOAuthenticator(Authenticator):
 			username = None
 		raise gen.Return(username)
 
+class GoogleAppsOAuthenticator(GoogleOAuthenticator):
+
+	apps_domain = Unicode(os.environ.get('APPS_DOMAIN', ''), config=True)
+
+	@gen.coroutine
+	def authenticate(self, handler):
+		username = yield GoogleOAuthenticator.authenticate(self, handler)
+
+		if not username.endswith('@'+self.apps_domain):
+			username = None
+		else:
+			username = username.split('@')[0]
+
+		raise gen.Return(username)
+
 class LocalGoogleOAuthenticator(LocalAuthenticator, GoogleOAuthenticator):
+	"""A version that mixes in local system user creation"""
+	pass
+
+class LocalGoogleAppsOAuthenticator(LocalAuthenticator, GoogleAppsOAuthenticator):
 	"""A version that mixes in local system user creation"""
 	pass
