@@ -109,13 +109,13 @@ class GoogleOAuthenticator(Authenticator):
 
 class GoogleAppsOAuthenticator(GoogleOAuthenticator):
 
-	apps_domain = Unicode(os.environ.get('APPS_DOMAIN', ''), config=True)
+	hosted_domain = Unicode(os.environ.get('HOSTED_DOMAIN', ''), config=True)
 
 	@gen.coroutine
 	def authenticate(self, handler):
 		username = yield GoogleOAuthenticator.authenticate(self, handler)
 
-		if not username or not username.endswith('@'+self.apps_domain):
+		if not username or not username.endswith('@'+self.hosted_domain):
 			username = None
 		else:
 			username = username.split('@')[0]
