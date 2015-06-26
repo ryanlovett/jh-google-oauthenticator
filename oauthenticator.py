@@ -59,7 +59,7 @@ class GoogleOAuthHandler(BaseHandler, GoogleOAuth2Mixin):
 			self.redirect(url_path_join(self.hub.server.base_url, 'home'))
 		else:
 			# todo: custom error page?
-			raise web.HTTPError(403)
+			raise HTTPError(403)
 
 class GoogleOAuthenticator(Authenticator):
 
@@ -84,7 +84,7 @@ class GoogleOAuthenticator(Authenticator):
 	def authenticate(self, handler):
 		code = handler.get_argument('code', False)
 		if not code:
-			raise web.HTTPError(400, "oauth callback made without a token") 
+			raise HTTPError(400, "oauth callback made without a token") 
 
 		user = yield handler.get_authenticated_user(
 			redirect_uri=self.oauth_callback_url,
