@@ -53,6 +53,7 @@ class GoogleOAuthHandler(BaseHandler, GoogleOAuth2Mixin):
 		#	raise HTTPError(400, "Invalid state")
 
 		username = yield self.authenticator.authenticate(self)
+		self.log.info('GOOGLEAPPS: username: "%s"', username)
 		if username:
 			user = self.user_from_username(username)
 			self.set_login_cookie(user)
@@ -104,8 +105,6 @@ class GoogleOAuthenticator(Authenticator):
 		bodyjs = json.loads(response.body.decode())
 
 		username = bodyjs['email']
-		if self.whitelist and username not in self.whitelist:
-			username = None
 		raise gen.Return(username)
 
 class GoogleAppsOAuthenticator(GoogleOAuthenticator):
@@ -120,6 +119,9 @@ class GoogleAppsOAuthenticator(GoogleOAuthenticator):
 			username = None
 		else:
 			username = username.split('@')[0]
+
+		if self.whitelist and username not in self.whitelist:
+			username = None
 
 		raise gen.Return(username)
 
