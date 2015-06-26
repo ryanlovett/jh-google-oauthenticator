@@ -116,7 +116,7 @@ class GoogleAppsOAuthenticator(GoogleOAuthenticator):
 	def authenticate(self, handler):
 		username = yield GoogleOAuthenticator.authenticate(self, handler)
 
-		if not username or username.endswith('@'+self.apps_domain):
+		if not username or not username.endswith('@'+self.apps_domain):
 			username = None
 		else:
 			username = username.split('@')[0]
