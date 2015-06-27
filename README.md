@@ -28,9 +28,6 @@ Then, add the following to your `jupyterhub_config.py` file:
 
     c.JupyterHub.authenticator_class = 'oauthenticator.GoogleOAuthenticator'
 
-You can alternatively use `LocalGoogleOAuthenticator` to handle both local and
-GitHub auth.
-
 You will need to provide the OAuth callback URL and the Google OAuth client ID
 and client secret to JupyterHub. For example, if these values are in the
 environment variables `$OAUTH_CALLBACK_URL`, `$OAUTH_CLIENT_ID` and
@@ -40,3 +37,11 @@ environment variables `$OAUTH_CALLBACK_URL`, `$OAUTH_CLIENT_ID` and
     c.GoogleOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
     c.GoogleOAuthenticator.oauth_client_id = os.environ['OAUTH_CLIENT_ID']
     c.GoogleOAuthenticator.oauth_client_secret = os.environ['OAUTH_CLIENT_SECRET']
+
+If you want to authenticate users in a hosted Google domain, e.g. `your-institution.edu`, use
+`oauthenticator.GoogleAppsOAuthenticator` and add the following to your `jupyterhub_config.py`:
+
+    c.GoogleOAuthenticator.hosted_domain = os.environ['HOSTED_DOMAIN']
+    
+and set the environment variable accordingly. This authenticator was developed to be used in an environment derived from
+[compmodels](https://github.com/compmodels/jupyterhub-deploy) where spawned containers are named after users. Container names cannot contain `@' so this latter authenticator class will strip it off in addition to the hosted domain name.
