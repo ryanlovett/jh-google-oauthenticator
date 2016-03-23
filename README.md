@@ -1,5 +1,10 @@
 # OAuthenticator
 
+---
+Notice: This code has been absorbed by [Jupyter's OAuthenticator](https://github.com/jupyter/oauthenticator). Please use that instead.
+
+---
+
 Google OAuth 2.0 + JuptyerHub Authenticator = OAuthenticator
 
 Google OAuthenticator is based on [GitHub OAuthenticator](https://github.com/jupyter/oauthenticator).
